@@ -6,3 +6,7 @@ export interface CryptoCoin {
   price_change_percentage_24h: number;
   image: string;
 }
+
+export interface CryptoListProps {
+  data : CryptoCoin[];
+}
