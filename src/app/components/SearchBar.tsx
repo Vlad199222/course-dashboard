@@ -7,7 +7,7 @@ interface SearchBarProps {
 
 export default function SearchBar({ search, setSearch }: SearchBarProps) {
   return (
-    <div className="max-w-md mx-auto mt-10">
+    <div className="ml-4 mt-6 w-100">
       <div className="relative">
         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
           <svg

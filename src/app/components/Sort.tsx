@@ -6,7 +6,7 @@ interface SortProps {
 
 export default function Sort({ onChange }: SortProps) {
   return (
-    <div className="block w-50">
+    <div className="block w-50 ml-4">
       <label
         htmlFor="countries"
         className="block mb-2 text-sm font-medium text-gray-600 w-full"
