@@ -1,6 +1,6 @@
-export const fetchCryptoList = async () => {
+export const fetchCryptoList = async (sort:any) => {
   const res = await fetch(
-    "http://localhost:3000/api/coins",
+    `http://localhost:3000/api/coins?sort=${sort}`,
     {next:{revalidate:60}}
   );
 

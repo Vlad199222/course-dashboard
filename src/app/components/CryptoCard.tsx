@@ -32,7 +32,7 @@ export default function CryptoCard({ coin }: CryptoCardProps) {
 
       <div className="ml-auto flex flex-col items-end space-y-1">
         <span className="text-2xl font-semibold text-zinc-900 dark:text-white">
-          $ {current_price.toLocaleString()}
+          $ {current_price !== null ?  current_price.toLocaleString(): "N/A"}
         </span>
       </div>
 
@@ -42,7 +42,7 @@ export default function CryptoCard({ coin }: CryptoCardProps) {
         }`}
       >
         {isPositive ? "\u25B2" : "\u25BC"}{" "}
-        {price_change_percentage_24h.toFixed(2)}%
+        {price_change_percentage_24h !== null ? price_change_percentage_24h.toFixed(2):"N/A"}%
       </div>
     </div>
   );

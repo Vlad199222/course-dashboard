@@ -1,13 +1,14 @@
-import { CoinGeckoSortMap } from "@/app/lib/sortOptions";
-import { error } from "console";
+import { sortOptions } from "@/app/lib/sortOptions";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
 
-  const sortParam = searchParams.get("sort") || "market-cap-desc";
+  const sortParam = searchParams.get("sort") || "market-cap_desc";
 
-  const sort = CoinGeckoSortMap[sortParam] || "market_cap_desc";
+  const sortObj = sortOptions.find((opt) => opt.value === sortParam);
+
+  const sort = sortObj?.apiValue || "market_cap_desc";
 
   const res = await fetch(
     `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=${sort}&per_page=100&page=1&sparkline=false,`,
