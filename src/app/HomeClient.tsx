@@ -8,10 +8,17 @@ import SearchBar from "./components/SearchBar";
 import CryptoList from "./components/CryptoList";
 import Sort from "./components/Sort";
 import Loader from "./components/Loader";
+import Pagination from "./components/Pagination";
+
+import { useSearchParams, useRouter } from "next/navigation";
 
 export default function HomeClient() {
+  const searchParams = useSearchParams();
+
+  const router = useRouter();
+  const pageParam = searchParams.get("page") || "1";
+  const sortParam = searchParams.get("sort") || "market-cap-desc";
   const [search, setSearch] = useState("");
-  const [optionValue, setOptionValue] = useState("market-cap-desc");
   const [coins, setCoins] = useState<CryptoCoin[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const filterCoins = coins.filter((coin) => {
@@ -22,7 +29,11 @@ export default function HomeClient() {
     const loadCoins = async () => {
       setIsLoading(true);
       try {
-        const data = await fetchCryptoList(optionValue);
+        const data = await fetchCryptoList({
+          sort: sortParam,
+          page: parseInt(pageParam),
+          perPage: 9,
+        });
 
         setCoins(data);
       } catch {
@@ -33,12 +44,18 @@ export default function HomeClient() {
     };
 
     loadCoins();
-  }, [optionValue]);
+  }, [pageParam, sortParam]);
+
+  const handleSortChange = (value: string) =>
+    router.push(`?page=1&sort=${value}`);
+
+  const handlePageChange = (newPage: number) =>
+    router.push(`?page=${newPage}&sort=${sortParam}`);
 
   return (
     <main>
       <div className="flex mt-10">
-        <Sort onChange={setOptionValue} />
+        <Sort onChange={handleSortChange} />
         <SearchBar search={search} setSearch={setSearch} />
       </div>
       <div className="mt-10">
@@ -53,6 +70,10 @@ export default function HomeClient() {
           </div>
         )}
       </div>
+      <Pagination
+        page={parseInt(pageParam || "1")}
+        onPageChange={handlePageChange}
+      />
     </main>
   );
 }

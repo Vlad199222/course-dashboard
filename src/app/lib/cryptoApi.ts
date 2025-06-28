@@ -1,6 +1,6 @@
-export const fetchCryptoList = async (sort:any) => {
+export const fetchCryptoList = async ({sort ,page,perPage,}:{sort:string,page:number,perPage?:number}) => {
   const res = await fetch(
-    `http://localhost:3000/api/coins?sort=${sort}`,
+    `http://localhost:3000/api/coins?sort=${sort}&page=${page}&perPage=${perPage}`,
     {next:{revalidate:60}}
   );
 
