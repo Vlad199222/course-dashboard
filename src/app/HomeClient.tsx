@@ -18,9 +18,12 @@ export default function HomeClient() {
   const router = useRouter();
   const pageParam = searchParams.get("page") || "1";
   const sortParam = searchParams.get("sort") || "market-cap-desc";
+  const page = parseInt(pageParam);
+  const currentPage = isNaN(page) ? 1 : page;
   const [search, setSearch] = useState("");
   const [coins, setCoins] = useState<CryptoCoin[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
   const filterCoins = coins.filter((coin) => {
     return coin.name.toLowerCase().includes(search.toLowerCase());
   });
@@ -29,13 +32,13 @@ export default function HomeClient() {
     const loadCoins = async () => {
       setIsLoading(true);
       try {
-        const data = await fetchCryptoList({
+        const result = await fetchCryptoList({
           sort: sortParam,
-          page: parseInt(pageParam),
-          perPage: 9,
+          page: currentPage,
+          perPage: 12,
         });
-
-        setCoins(data);
+        setCoins(result.coins);
+        setTotalPages(Math.ceil(result.total / 12));
       } catch {
         console.error;
       } finally {
@@ -46,6 +49,14 @@ export default function HomeClient() {
     loadCoins();
   }, [pageParam, sortParam]);
 
+  useEffect(() => {
+    if (totalPages < 1) return;
+    if (currentPage < 1) {
+      router.replace(`?page=1&sort=${sortParam}`);
+    } else if (currentPage > totalPages) {
+      router.replace(`?page=${totalPages}&sort=${sortParam}`);
+    }
+  }, [currentPage, totalPages, sortParam]);
   const handleSortChange = (value: string) =>
     router.push(`?page=1&sort=${value}`);
 
@@ -73,6 +84,7 @@ export default function HomeClient() {
       <Pagination
         page={parseInt(pageParam || "1")}
         onPageChange={handlePageChange}
+        totalPages={totalPages}
       />
     </main>
   );

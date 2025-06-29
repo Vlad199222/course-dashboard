@@ -1,6 +1,5 @@
 import { sortOptions } from "@/app/lib/sortOptions";
 import { NextRequest } from "next/server";
-
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
 
@@ -14,7 +13,8 @@ export async function GET(req: NextRequest) {
   const perPageParam = searchParams.get("perPage");
 
   const page = parseInt(pageParam ?? "") || 1;
-  const perPage = parseInt(perPageParam ?? "") || 10;
+  const perPage = parseInt(perPageParam ?? "") || 12;
+    const total = 250;
 
   const res = await fetch(
     `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=${sort}&per_page=${perPage}&page=${page}&sparkline=false,`,
@@ -34,8 +34,18 @@ export async function GET(req: NextRequest) {
   }
   try {
     const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) {
+      return new Response(
+        JSON.stringify({ coins: [], message: "Більше монет немає" }),
+        {
+          status: 200,
+          headers: { "Content-Type": "aplication/json" },
+        }
+      );
+    }
 
-    return new Response(JSON.stringify(data), {
+  
+    return new Response(JSON.stringify({ coins: data, total: total }), {
       status: 200,
       headers: { "Content-Type": "aplication/json" },
     });
