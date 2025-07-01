@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
   const perPageParam = searchParams.get("perPage");
 
   const page = parseInt(pageParam ?? "") || 1;
-  const perPage = parseInt(perPageParam ?? "") || 12;
+  const perPage = parseInt(perPageParam ?? "") || 20;
     const total = 250;
 
   const res = await fetch(

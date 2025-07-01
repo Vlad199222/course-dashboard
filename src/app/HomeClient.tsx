@@ -9,7 +9,7 @@ import CryptoList from "./components/CryptoList";
 import Sort from "./components/Sort";
 import Loader from "./components/Loader";
 import Pagination from "./components/Pagination";
-
+import { scroller, Element } from "react-scroll";
 import { useSearchParams, useRouter } from "next/navigation";
 
 export default function HomeClient() {
@@ -35,10 +35,10 @@ export default function HomeClient() {
         const result = await fetchCryptoList({
           sort: sortParam,
           page: currentPage,
-          perPage: 12,
+          perPage: 20,
         });
         setCoins(result.coins);
-        setTotalPages(Math.ceil(result.total / 12));
+        setTotalPages(Math.ceil(result.total / 20));
       } catch {
         console.error;
       } finally {
@@ -57,6 +57,16 @@ export default function HomeClient() {
       router.replace(`?page=${totalPages}&sort=${sortParam}`);
     }
   }, [currentPage, totalPages, sortParam]);
+
+  useEffect(() => {
+    if (coins.length > 0) {
+      scroller.scrollTo("top", {
+        duration: 500,
+        delay: 0,
+        smooth: "easeInOutQuart",
+      });
+    }
+  }, [coins]);
   const handleSortChange = (value: string) =>
     router.push(`?page=1&sort=${value}`);
 
@@ -69,18 +79,20 @@ export default function HomeClient() {
         <Sort onChange={handleSortChange} />
         <SearchBar search={search} setSearch={setSearch} />
       </div>
-      <div className="mt-10">
-        {isLoading ? (
-          <Loader />
-        ) : filterCoins.length > 0 ? (
-          <CryptoList data={filterCoins} />
-        ) : (
-          <div className="flex flex-col items-center justify-center text-zinc-500  dark:text-zinc-400 text-xl mt-10">
-            <HiOutlineSearch />
-            Нічого не знайдено
-          </div>
-        )}
-      </div>
+      <Element name="top">
+        <div className="mt-10">
+          {isLoading ? (
+            <Loader />
+          ) : filterCoins.length > 0 ? (
+            <CryptoList data={filterCoins} />
+          ) : (
+            <div className="flex flex-col items-center justify-center text-zinc-500  dark:text-zinc-400 text-xl mt-10">
+              <HiOutlineSearch />
+              Нічого не знайдено
+            </div>
+          )}
+        </div>
+      </Element>
       <Pagination
         page={parseInt(pageParam || "1")}
         onPageChange={handlePageChange}

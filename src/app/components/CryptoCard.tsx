@@ -1,3 +1,4 @@
+import { FaRegStar, FaStar } from "react-icons/fa";
 import { CryptoCoin } from "../types/coin";
 
 interface CryptoCardProps {
@@ -10,39 +11,47 @@ export default function CryptoCard({ coin }: CryptoCardProps) {
 
   const isPositive = price_change_percentage_24h >= 0;
   return (
-    <div
-      className={`bg-white dark:bg-zinc-900 rounded-3xl shadow-lg p-6 flex items-center space-x-6 hover:shadow-2xl hover:scale-105 transition-transform duration-300 ease-in-out`}
-    >
-      <div>
-        <img
-          src={image}
-          alt="cypto"
-          className="w-16 h-16  rounded-full object-contain border border-gray-300 dark:border-zinc-700"
-        />
-      </div>
+    <div>
+      <div className="bg-slate-200 w-fit m-5 rounded-2xl p-4">
+        <div className="rounded-2xl bg-white p-4 relative">
+          <button className=" absolute right-2 top-1 h-8 w-8 cursor-pointer p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-800 transition flex justify-center items-center">
+            <FaRegStar className="w-4 h-4"  />
+            <FaStar className="text-yellow-400"/>
+          </button>
+          <div className="flex items-center">
+            <div className="relative rounded-xl bg-blue-400 p-4">
+              <img className="w-12" src={image} alt={name} />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold ml-2 text-black">{name}</h2>
+              <p className=" text-sm uppercase text-zinc-500 dark:text-zinc-400 ml-2 tracking-wide">
+                {symbol}
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col justify-start">
+            <p className="my-4 text-left text-4xl font-bold text-gray-700">
+              {current_price !== null ? current_price.toLocaleString() : "N/A"}
+              <span className="text-sm"> $ </span>
+            </p>
+            <div className="flex items-center text-sm text-green-500">
+              <div
+                className={`text-xl font-semibold flex items-center gap-1 ${
+                  isPositive ? "text-emerald-500" : "text-rose-500"
+                }`}
+              >
+                {isPositive ? "\u25B2" : "\u25BC"}{" "}
+                {price_change_percentage_24h !== null
+                  ? price_change_percentage_24h.toFixed(2)
+                  : "N/A"}
+                %
+              </div>
 
-      <div className="flex flex-col">
-        <h2 className="text-2xl font-extrabold text-zinc-900 dark:text-white tracking-wide">
-          {name}
-        </h2>
-        <p className="text-sm uppercase text-zinc-500 dark:text-zinc-400 tracking-wide">
-          {symbol}
-        </p>
-      </div>
-
-      <div className="ml-auto flex flex-col items-end space-y-1">
-        <span className="text-2xl font-semibold text-zinc-900 dark:text-white">
-          $ {current_price !== null ?  current_price.toLocaleString(): "N/A"}
-        </span>
-      </div>
-
-      <div
-        className={`text-xl font-semibold flex items-center gap-1 ${
-          isPositive ? "text-emerald-500" : "text-rose-500"
-        }`}
-      >
-        {isPositive ? "\u25B2" : "\u25BC"}{" "}
-        {price_change_percentage_24h !== null ? price_change_percentage_24h.toFixed(2):"N/A"}%
+              <span> </span>
+              <span className="ml-2 text-gray-400"> останні 24 г. </span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
