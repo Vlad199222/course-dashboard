@@ -11,6 +11,7 @@ import Loader from "./components/Loader";
 import Pagination from "./components/Pagination";
 import { scroller, Element } from "react-scroll";
 import { useSearchParams, useRouter } from "next/navigation";
+import SkeletonCard from "./components/SkeletonCard";
 
 export default function HomeClient() {
   const searchParams = useSearchParams();
@@ -80,18 +81,22 @@ export default function HomeClient() {
         <SearchBar search={search} setSearch={setSearch} />
       </div>
       <Element name="top">
-        <div className="mt-10">
-          {isLoading ? (
-            <Loader />
-          ) : filterCoins.length > 0 ? (
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-1 px-4">
+            {[...Array(12)].map((_, index) => (
+              <SkeletonCard key={index} />
+            ))}
+          </div>
+        ) : filterCoins.length > 0 ? (
+          <div className="mt-10">
             <CryptoList data={filterCoins} />
-          ) : (
-            <div className="flex flex-col items-center justify-center text-zinc-500  dark:text-zinc-400 text-xl mt-10">
-              <HiOutlineSearch />
-              Нічого не знайдено
-            </div>
-          )}
-        </div>
+          </div>
+        ) : coins.length > 0 ? (
+          <div className="flex flex-col items-center justify-center text-zinc-500  dark:text-zinc-400 text-xl mt-10">
+            <HiOutlineSearch />
+            Нічого не знайдено
+          </div>
+        ) : null}
       </Element>
       <Pagination
         page={parseInt(pageParam || "1")}
