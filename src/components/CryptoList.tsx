@@ -1,5 +1,5 @@
 import CryptoCard from "./CryptoCard";
-import { CryptoListProps } from "../types/coin";
+import { CryptoListProps } from "@/app/types/coin";
 
 export default function CryptoList({ data }: CryptoListProps) {
   return (

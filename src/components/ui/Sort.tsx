@@ -1,6 +1,6 @@
 "use client";
 
-import { sortOptions } from "../lib/sortOptions";
+import { sortOptions } from "@/app/lib/sortOptions";
 
 interface SortProps {
   onChange: (value: string) => void;

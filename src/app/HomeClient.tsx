@@ -1,24 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { scroller, Element } from "react-scroll";
+
+import { fetchCryptoList } from "./lib/cryptoApi";
 import { CryptoCoin } from "./types/coin";
 import { HiOutlineSearch } from "react-icons/hi";
-import { fetchCryptoList } from "./lib/cryptoApi";
-import SearchBar from "./components/SearchBar";
-import CryptoList from "./components/CryptoList";
-import Sort from "./components/Sort";
-import Loader from "./components/Loader";
-import Pagination from "./components/Pagination";
-import { scroller, Element } from "react-scroll";
-import { useSearchParams, useRouter } from "next/navigation";
-import SkeletonCard from "./components/SkeletonCard";
+
+import SearchBar from "@/components/ui/SearchBar";
+import CryptoList from "@/components/CryptoList";
+import Sort from "@/components/ui/Sort";
+import Pagination from "@/components/ui/Pagination";
+import SkeletonCard from "@/components/ui/SkeletonCard";
 
 export default function HomeClient() {
   const searchParams = useSearchParams();
-
-  const router = useRouter();
   const pageParam = searchParams.get("page") || "1";
   const sortParam = searchParams.get("sort") || "market-cap-desc";
+
+  const router = useRouter();
   const page = parseInt(pageParam);
   const currentPage = isNaN(page) ? 1 : page;
   const [search, setSearch] = useState("");
@@ -29,8 +30,7 @@ export default function HomeClient() {
     return coin.name.toLowerCase().includes(search.toLowerCase());
   });
 
-  useEffect(() => {
-    const loadCoins = async () => {
+  const loadCoins = async () => {
       setIsLoading(true);
       try {
         const result = await fetchCryptoList({
@@ -42,21 +42,27 @@ export default function HomeClient() {
         setTotalPages(Math.ceil(result.total / 20));
       } catch {
         console.error;
-      } finally {
+      } 
         setIsLoading(false);
-      }
-    };
 
+    };
+    
+  useEffect(() => {
     loadCoins();
-  }, [pageParam, sortParam]);
+  }, [ sortParam,currentPage]);
 
   useEffect(() => {
     if (totalPages < 1) return;
-    if (currentPage < 1) {
-      router.replace(`?page=1&sort=${sortParam}`);
-    } else if (currentPage > totalPages) {
-      router.replace(`?page=${totalPages}&sort=${sortParam}`);
+
+    if (currentPage < 1 || currentPage > totalPages) {
+      const validPage = Math.min(Math.max(currentPage, 1), totalPages);
+      router.replace(`?page=${validPage}&sort=${sortParam}`);
     }
+    // if (currentPage < 1) {
+    //   router.replace(`?page=1&sort=${sortParam}`);
+    // } else if (currentPage > totalPages) {
+    //   router.replace(`?page=${totalPages}&sort=${sortParam}`);
+    // }
   }, [currentPage, totalPages, sortParam]);
 
   useEffect(() => {
