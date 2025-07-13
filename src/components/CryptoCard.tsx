@@ -1,6 +1,6 @@
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { CryptoCoin } from "@/app/types/coin";
-import { useFavorites } from "@/hooks/useFavorites";
+import { useFavoritesStore } from "@/hooks/useFavorites";
 
 interface CryptoCardProps {
   coin: CryptoCoin;
@@ -10,14 +10,18 @@ export default function CryptoCard({ coin }: CryptoCardProps) {
   const { name, symbol, current_price, price_change_percentage_24h, image } =
     coin;
 
-  const { isFavorite, toggle } = useFavorites(coin.id);
+  const favorites = useFavoritesStore((state) => state.favorites);
+  const isFavorite = favorites.some((item) => item.id === coin.id);
+  const toggle = useFavoritesStore((state) => state.toggle);
   const isPositive = price_change_percentage_24h >= 0;
   return (
     <div>
       <div className="bg-slate-200 w-fit m-5 rounded-2xl p-4">
         <div className="rounded-2xl bg-white p-4 relative">
           <button
-            onClick={toggle}
+            onClick={() => {
+              toggle(coin);
+            }}
             className=" absolute right-2 top-1 h-8 w-8 cursor-pointer p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-800 transition flex justify-center items-center"
           >
             {isFavorite ? (

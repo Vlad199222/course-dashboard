@@ -1,33 +1,40 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { CryptoCoin } from "@/app/types/coin";
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
-export const useFavorites = (coinId: string) => {
-  const [isFavorite, setIsFavorite] = useState(false);
-  useEffect(() => {
-    if (typeof window === undefined) return;
-    const stores = localStorage.getItem("favorites");
-    const favs = stores ? JSON.parse(stores) : [];
+interface FavoritesState {
+  favorites: CryptoCoin[];
+  toggle: (coin: CryptoCoin) => void;
+  isFavorite: (id: string) => boolean;
+  clearFavorites: () => void;
+  removeFavorite: (coinId: any) => void;
+}
 
-    if (favs.includes(coinId)) {
-      setIsFavorite(true);
-    } else {
-      setIsFavorite(false);
+export const useFavoritesStore = create<FavoritesState>()(
+  persist(
+    (set, get) => ({
+      favorites: [],
+      toggle: (coin) => {
+        const exists = get().favorites.some((item) => item.id === coin.id);
+        const updated = exists
+          ? get().favorites.filter((item) => item.id !== coin.id)
+          : [...get().favorites, coin];
+        set({ favorites: updated });
+      },
+      isFavorite: (id) => {
+        return get().favorites.some((item) => item.id === id);
+      },
+      clearFavorites: () => set({ favorites: [] }),
+      removeFavorite: (coinId) =>
+        set((state) => {
+          let update = state.favorites.filter((c) => c.id !== coinId);
+          return { favorites: update };
+        }),
+    }),
+    {
+      name: "favorites-storage",
     }
-  }, [coinId]);
-  const toggle = () => {
-    let favs: string[] = JSON.parse(localStorage.getItem("favorites") || "[]");
-    console.log(favs);
-    if (favs.includes(coinId)) {
-      favs = favs.filter((id) => id !== coinId);
-    } else {
-      favs.push(coinId);
-    }
-
-    localStorage.setItem("favorites", JSON.stringify(favs));
-
-    setIsFavorite(favs.includes(coinId));
-  };
-
-  return { isFavorite, toggle };
-};
+  )
+);
