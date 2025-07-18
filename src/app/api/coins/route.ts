@@ -1,4 +1,4 @@
-import { sortOptions } from "@/app/lib/sortOptions";
+import { sortOptions } from "@/lib/sortOptions";
 import { NextRequest } from "next/server";
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);

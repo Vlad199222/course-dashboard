@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { scroller, Element } from "react-scroll";
 
-import { fetchCryptoList } from "./lib/cryptoApi";
+import { fetchCryptoList } from "../lib/cryptoApi";
 import { CryptoCoin } from "./types/coin";
 import { HiOutlineSearch } from "react-icons/hi";
 
