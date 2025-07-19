@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { Button } from "../ui/button";
+import LoginModals from "../modals/LoginModal";
 
 const Header: React.FC = () => {
   return (
@@ -9,7 +10,7 @@ const Header: React.FC = () => {
         CryptoDashboard
       </Link>
       <div className="flex gap-2">
-        <Button variant="secondary">Увійти</Button>
+        <LoginModals />
         <Button>Зареєструватися</Button>
       </div>
     </header>

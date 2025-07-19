@@ -15,6 +15,7 @@ import Pagination from "@/components/ui/Pagination";
 import SkeletonCard from "@/components/ui/SkeletonCard";
 import Favoritessidebar from "@/components/ui/FavoritesSidebar";
 import { useFavoritesStore } from "@/hooks/useFavorites";
+import LoginModals from "@/components/modals/LoginModal";
 
 export default function HomeClient() {
   const favorites = useFavoritesStore((state) => state.favorites);
@@ -82,7 +83,11 @@ export default function HomeClient() {
   return (
     <>
       <Favoritessidebar />
-      <main className={`transition-all duration-300 ease-in-out ${hasfavorites ? "pr-80" : "pr-0"}`}>
+      <main
+        className={`transition-all duration-300 ease-in-out ${
+          hasfavorites ? "pr-80" : "pr-0"
+        }`}
+      >
         <div className="flex mt-10">
           <Sort onChange={handleSortChange} />
           <SearchBar search={search} setSearch={setSearch} />
