@@ -25,7 +25,15 @@ export async function POST(req: NextRequest) {
       expiresIn: "7d",
     });
 
-    const response = NextResponse.json({ message: "Успішний вхід" });
+    const response = NextResponse.json({
+      message: "Успішний вхід",
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+        image: user.image || "",
+      },
+    });
     response.cookies.set("token", token, {
       httpOnly: true,
       path: "/",
