@@ -5,6 +5,8 @@ type User = {
   user: string;
   email: string;
   image?: string;
+  name?: string;
+  banned?: boolean;
 };
 
 type AuthStore = {
@@ -14,7 +16,13 @@ type AuthStore = {
 };
 
 export const useAuthStore = create<AuthStore>((set) => ({
-  user: null,
-  setUser: (user) => set({ user }),
+  user:
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("user") || "null")
+      : null,
+  setUser: (user) => {
+    localStorage.setItem("user", JSON.stringify(user));
+    set({ user });
+  },
   logout: () => set({ user: null }),
 }));
