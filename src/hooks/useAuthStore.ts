@@ -2,7 +2,6 @@
 import { create } from "zustand";
 
 type User = {
-  user: string;
   email: string;
   image?: string;
   name?: string;
@@ -24,5 +23,8 @@ export const useAuthStore = create<AuthStore>((set) => ({
     localStorage.setItem("user", JSON.stringify(user));
     set({ user });
   },
-  logout: () => set({ user: null }),
+  logout: () => {
+    localStorage.removeItem("user");
+    set({ user: null });
+  },
 }));
