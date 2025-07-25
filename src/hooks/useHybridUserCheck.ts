@@ -9,7 +9,7 @@ export const useHybridUserCheck = () => {
 
     const checkBannedStatus = async () => {
       try {
-        const res = await fetch("api/auth/me");
+        const res = await fetch("/api/auth/me");
         const data = await res.json();
         if (!res.ok || data?.user) {
           console.warn("Не вийшло отримати користувача з бази");
