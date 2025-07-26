@@ -18,7 +18,7 @@ export default function LoginModal() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [open, setOpen] = useState(false);
-  const { setUser } = useAuthStore();
+  const { setUser, logout } = useAuthStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,6 +37,13 @@ export default function LoginModal() {
       }
 
       const data = await res.json();
+      if (res.status === 200) {
+        if (data.user?.banned) {
+          alert("Ваш акаунт заблокованно");
+          logout();
+          return;
+        }
+      }
       setUser(data.user);
       setOpen(false);
       alert("зашло");
