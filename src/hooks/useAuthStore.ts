@@ -1,5 +1,6 @@
 "use client";
 import { create } from "zustand";
+import {destroyCookie} from "nookies";
 
 type User = {
   email: string;
@@ -12,6 +13,8 @@ type AuthStore = {
   user: User | null;
   setUser: (user: User) => void;
   logout: () => void;
+  isAutoLoginFineshed: boolean;
+  setAutoLoginFinished: (val: boolean) => void;
 };
 
 export const useAuthStore = create<AuthStore>((set) => ({
@@ -24,7 +27,11 @@ export const useAuthStore = create<AuthStore>((set) => ({
     set({ user });
   },
   logout: () => {
+    console.log('Logout')
     localStorage.removeItem("user");
+    destroyCookie(null,"token");
     set({ user: null });
   },
+  isAutoLoginFineshed: false,
+  setAutoLoginFinished: (val) => set({ isAutoLoginFineshed: val }),
 }));
