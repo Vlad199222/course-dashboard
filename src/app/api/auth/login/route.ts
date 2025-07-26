@@ -32,10 +32,13 @@ export async function POST(req: NextRequest) {
         email: user.email,
         name: user.name,
         image: user.image || "",
+        banned: user.banned,
       },
     });
     response.cookies.set("token", token, {
       httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
       path: "/",
       maxAge: 60 * 60 * 24 * 7,
     });
