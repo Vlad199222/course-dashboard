@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import AppInit from "@/components/layout/AppInit";
 import ClientOnly from "@/components/layout/ClientOnly";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,13 +26,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ClientOnly>
+          <Toaster position="top-center" reverseOrder={false} />
           <AppInit />
           <Header />
         </ClientOnly>

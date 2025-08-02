@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useAuthStore } from "./useAuthStore";
+import { toast } from "react-hot-toast";
 
 export const useHybridUserCheck = () => {
   const { user, setUser, logout, setAutoLoginFinished, isAutoLoginFineshed } =
@@ -20,7 +21,7 @@ export const useHybridUserCheck = () => {
         });
 
         if (res.status === 403) {
-          alert("❌ Ваш аккаунт заблокирован (403)");
+          toast.error("❌ Ваш аккаунт заблокирован (403)");
           logout();
           return;
         }
@@ -29,14 +30,14 @@ export const useHybridUserCheck = () => {
         const freshUser = data.user;
 
         if (freshUser?.banned) {
-          alert("❌ Ваш аккаунт заблокирован (user.banned === true)");
+          toast.error("❌ Ваш аккаунт заблокирован (user.banned === true)");
           logout();
           return;
         }
 
         setUser(freshUser);
       } catch (error) {
-        console.error("❌ Ошибка при проверке banned", error);
+        toast.error("❌ Ошибка при проверке banned");
         logout();
       }
     };

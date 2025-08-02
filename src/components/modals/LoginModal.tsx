@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuthStore } from "@/hooks/useAuthStore";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 export default function LoginModal() {
   const [email, setEmail] = useState("");
@@ -39,16 +40,16 @@ export default function LoginModal() {
       const data = await res.json();
       if (res.status === 200) {
         if (data.user?.banned) {
-          alert("Ваш акаунт заблокованно");
+          toast.error("Ваш акаунт заблокованно");
           logout();
           return;
         }
       }
       setUser(data.user);
       setOpen(false);
-      alert("зашло");
+      toast.success("Успішний вхід");
     } catch (err) {
-      console.error("Помилка логіна", err);
+      toast.error("Помилка логіна");
     }
   };
 
