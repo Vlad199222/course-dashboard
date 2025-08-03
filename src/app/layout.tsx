@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/layout/Header";
 import AppInit from "@/components/layout/AppInit";
 import ClientOnly from "@/components/layout/ClientOnly";
 import { Toaster } from "react-hot-toast";
+import Header from "@/components/layout/Header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

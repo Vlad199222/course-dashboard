@@ -9,3 +9,4 @@ export const POST = async () => {
   });
   return response;
 };
+
