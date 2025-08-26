@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { ModalProps } from "./LoginModal";
+import { useAuthStore } from "@/hooks/useAuthStore";
 
 export interface SignupModalProps extends ModalProps {
   openLoginModal: () => void;
@@ -29,9 +30,13 @@ export default function SignupModal({
   const [confirm, setConfirm] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const setUser = useAuthStore((s) => s.setUser);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const emailClean = email.trim().toLocaleLowerCase();
+
+    // Простенька валідація на фронті
     if (password.length < 6) return toast.error("Пароль щонайменше 6 символів");
     if (password !== confirm) return toast.error("Паролі не збігаються");
 
@@ -48,10 +53,17 @@ export default function SignupModal({
         return toast.error(data?.message ?? "Реєстрація не вдалася");
       }
       toast.success("Реєстрація успішна");
+
+      // Очищаємо поля форми
+      setUser(data.user);
       setEmail("");
       setPassword("");
       setConfirm("");
+
+      // Закриваємо модалку
       openLoginModal();
+
+      toast.success("Ви увійшли в акаунт");
     } catch (err) {
       toast.error("Помилка Мережі");
     } finally {
