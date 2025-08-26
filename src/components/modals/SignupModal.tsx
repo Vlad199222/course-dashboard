@@ -15,6 +15,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { ModalProps } from "./LoginModal";
 import { useAuthStore } from "@/hooks/useAuthStore";
+import { Eye, EyeOff } from "lucide-react";
 
 export interface SignupModalProps extends ModalProps {
   openLoginModal: () => void;
@@ -29,6 +30,8 @@ export default function SignupModal({
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const setUser = useAuthStore((s) => s.setUser);
 
@@ -81,7 +84,7 @@ export default function SignupModal({
           Зареєструватися
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] p-10">
         <DialogHeader>
           <DialogTitle>Зареєструватися</DialogTitle>
           <DialogDescription>
@@ -89,9 +92,9 @@ export default function SignupModal({
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
-          <div className="grid gap-4">
+          <div className="grid gap-4 mt-6">
             <div className="grid gap-3">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">Емейл</Label>
               <Input
                 id="email"
                 name="email"
@@ -102,30 +105,56 @@ export default function SignupModal({
               />
             </div>
             <div className="grid gap-3">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-              />
+              <Label htmlFor="password">Пароль</Label>
+              <div className="relative">
+                <Input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => {
+                    setShowPassword(!showPassword);
+                  }}
+                  className="absolute right-2 top-1/2 -translate-y-1/2"
+                >
+                  {showPassword ? <EyeOff /> : <Eye />}
+                </Button>
+              </div>
             </div>
             <div className="grid gap-3">
-              <Label htmlFor="confirm">Confirm Password</Label>
-              <Input
-                id="confirm"
-                name="confirm"
-                type="password"
-                onChange={(e) => {
-                  setConfirm(e.target.value);
-                }}
-              />
+              <Label htmlFor="confirm">Підтвердження пароля</Label>
+              <div className="relative">
+                <Input
+                  id="confirm"
+                  name="confirm"
+                  type={showConfirm ? "text" : "password"}
+                  onChange={(e) => {
+                    setConfirm(e.target.value);
+                  }}
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => {
+                    setShowConfirm(!showConfirm);
+                  }}
+                  className="absolute right-2 top-1/2 -translate-y-1/2"
+                >
+                  {showConfirm ? <EyeOff /> : <Eye />}
+                </Button>
+              </div>
             </div>
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="mt-8">
             <DialogClose asChild>
               <Button variant="outline">Відмінити</Button>
             </DialogClose>
