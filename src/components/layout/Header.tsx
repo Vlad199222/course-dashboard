@@ -14,11 +14,11 @@ const Header: React.FC = () => {
   const [openLogin, setOpenLogin] = useState(false);
   const [openSignup, setOpenSinup] = useState(false);
 
-  const openLoginWindow = () => {
+  const openLoginWindow = (time: number = 1000) => {
     setOpenSinup(false);
     setTimeout(() => {
       setOpenLogin(true);
-    }, 1000);
+    }, time);
   };
   const { user } = useAuthStore();
   const handleLogout = useHandleLogout();
@@ -51,7 +51,7 @@ const Header: React.FC = () => {
           <SignupModal
             open={openSignup}
             setOpen={setOpenSinup}
-            openLoginModal={openLoginWindow}
+            openLoginModal={ openLoginWindow}
           />
         </div>
       )}
