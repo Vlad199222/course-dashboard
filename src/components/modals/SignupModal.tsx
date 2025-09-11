@@ -20,7 +20,7 @@ import PasswordStrengthBar from "../password/PasswordStrengthBar";
 import { usePasswordStrength } from "../password/usePasswordStrength";
 
 export interface SignupModalProps extends ModalProps {
-  openLoginModal: () => void;
+  openLoginModal: (delay: number) => void;
 }
 
 export default function SignupModal({
@@ -68,7 +68,6 @@ export default function SignupModal({
       setConfirm("");
 
       // Закриваємо модалку
-      openLoginModal();
 
       toast.success("Ви увійшли в акаунт");
     } catch (err) {
@@ -96,7 +95,7 @@ export default function SignupModal({
             Введіть ваш email і пароль, щоб створити аккаунт
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid gap-4 mt-6">
             <div className="grid gap-3">
               <Label htmlFor="email">Емейл</Label>
@@ -176,6 +175,14 @@ export default function SignupModal({
             </Button>
           </DialogFooter>
         </form>
+        <p
+          onClick={() => {
+            openLoginModal(300);
+          }}
+          className="cursor-pointer mt-6 text-center text-sm text-blue-600 hover:underline dark:text-blue-400"
+        >
+          Вже зареєстровані?
+        </p>
       </DialogContent>
     </Dialog>
   );
