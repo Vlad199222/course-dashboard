@@ -16,6 +16,8 @@ import toast from "react-hot-toast";
 import { ModalProps } from "./LoginModal";
 import { useAuthStore } from "@/hooks/useAuthStore";
 import { Eye, EyeOff } from "lucide-react";
+import PasswordStrengthBar from "../password/PasswordStrengthBar";
+import { usePasswordStrength } from "../password/usePasswordStrength";
 
 export interface SignupModalProps extends ModalProps {
   openLoginModal: () => void;
@@ -32,6 +34,8 @@ export default function SignupModal({
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+
+  const strength = usePasswordStrength(password);
 
   const setUser = useAuthStore((s) => s.setUser);
 
@@ -79,6 +83,7 @@ export default function SignupModal({
         <Button
           onClick={() => {
             setOpen(true);
+            if (!open) setPassword("");
           }}
         >
           Зареєструватися
@@ -115,10 +120,11 @@ export default function SignupModal({
                     setPassword(e.target.value);
                   }}
                 />
+
                 <Button
                   type="button"
                   variant="ghost"
-                  size="icon"
+                  size="sm"
                   onClick={() => {
                     setShowPassword(!showPassword);
                   }}
@@ -127,6 +133,13 @@ export default function SignupModal({
                   {showPassword ? <EyeOff /> : <Eye />}
                 </Button>
               </div>
+              {password.length > 0 && (
+                <PasswordStrengthBar
+                  label={strength.label}
+                  barClass={strength.barClass}
+                  barWidth={strength.barWidth}
+                />
+              )}
             </div>
             <div className="grid gap-3">
               <Label htmlFor="confirm">Підтвердження пароля</Label>
@@ -142,7 +155,7 @@ export default function SignupModal({
                 <Button
                   type="button"
                   variant="ghost"
-                  size="icon"
+                  size="sm"
                   onClick={() => {
                     setShowConfirm(!showConfirm);
                   }}
