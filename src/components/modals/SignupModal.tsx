@@ -34,6 +34,7 @@ export default function SignupModal({
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [match, setMatch] = useState(true);
 
   const strength = usePasswordStrength(password);
 
@@ -117,6 +118,7 @@ export default function SignupModal({
                   type={showPassword ? "text" : "password"}
                   onChange={(e) => {
                     setPassword(e.target.value);
+                    setMatch(e.target.value === confirm);
                   }}
                 />
 
@@ -149,6 +151,7 @@ export default function SignupModal({
                   type={showConfirm ? "text" : "password"}
                   onChange={(e) => {
                     setConfirm(e.target.value);
+                    setMatch(password === e.target.value);
                   }}
                 />
                 <Button
@@ -163,6 +166,15 @@ export default function SignupModal({
                   {showConfirm ? <EyeOff /> : <Eye />}
                 </Button>
               </div>
+              {confirm.length > 0 && (
+                <p
+                  className={`text-sm ${
+                    match ? "text-green-500" : "text-red-500"
+                  }`}
+                >
+                  {match ? "Паролі співпадають" : "Паролі не співпадають"}
+                </p>
+              )}
             </div>
           </div>
 
@@ -170,7 +182,7 @@ export default function SignupModal({
             <DialogClose asChild>
               <Button variant="outline">Відмінити</Button>
             </DialogClose>
-            <Button type="submit" disabled={loading}>
+            <Button type="submit" disabled={loading || !match}>
               {loading ? "Реєструю..." : "Зареєструватись"}
             </Button>
           </DialogFooter>
