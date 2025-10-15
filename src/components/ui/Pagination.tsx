@@ -1,4 +1,3 @@
-
 interface PaginationProps {
   onPageChange: (page: number) => void;
   page: number;
@@ -78,7 +77,7 @@ export default function Pagination({
               </svg>
             </button>
           </li>
-          {newPages.map((pageNumber: any, i) => {
+          {newPages.map((pageNumber: number, i) => {
             return (
               <li key={i}>
                 <button

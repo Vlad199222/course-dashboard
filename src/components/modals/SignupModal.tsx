@@ -71,7 +71,7 @@ export default function SignupModal({
       // Закриваємо модалку
 
       toast.success("Ви увійшли в акаунт");
-    } catch (err) {
+    } catch  {
       toast.error("Помилка Мережі");
     } finally {
       setLoading(false);

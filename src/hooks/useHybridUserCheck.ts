@@ -36,19 +36,19 @@ export const useHybridUserCheck = () => {
         }
 
         setUser(freshUser);
-      } catch (error) {
+      } catch  {
         toast.error("❌ Ошибка при проверке banned");
         logout();
       }
     };
 
     checkBannedStatus();
-  }, [isAutoLoginFineshed]);
+  }, [isAutoLoginFineshed ,logout,setUser]);
 
   useEffect(() => {
     if (user && !isAutoLoginFineshed) {
       console.log("автологин завершился");
       setAutoLoginFinished(true);
     }
-  }, [user]);
+  }, [user,isAutoLoginFineshed,setAutoLoginFinished]);
 };

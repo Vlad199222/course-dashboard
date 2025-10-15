@@ -1,4 +1,3 @@
-import { strengthMap } from "./strength.helper";
 
 type PasswordStrengthProps = {
   barWidth: string;

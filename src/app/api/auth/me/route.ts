@@ -1,10 +1,10 @@
 import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { connectToDB } from "@/utils/db";
 import User from "@/models/User";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const token = (await cookies()).get("token")?.value;
   console.log(token);
   if (!token) {
@@ -34,7 +34,7 @@ export async function GET(req: NextRequest) {
 
     console.log("Юзер найден", user.email);
     return NextResponse.json({ user });
-  } catch (error) {
+  } catch  {
     return NextResponse.json({ message: "Невалідний токен" }, { status: 401 });
   }
 }

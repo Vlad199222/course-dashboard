@@ -15,7 +15,7 @@ import Pagination from "@/components/ui/Pagination";
 import SkeletonCard from "@/components/ui/SkeletonCard";
 import Favoritessidebar from "@/components/ui/FavoritesSidebar";
 import { useFavoritesStore } from "@/hooks/useFavorites";
-import LoginModals from "@/components/modals/LoginModal";
+import { useCallback } from "react";
 
 export default function HomeClient() {
   const favorites = useFavoritesStore((state) => state.favorites);
@@ -36,7 +36,7 @@ export default function HomeClient() {
     return coin.name.toLowerCase().includes(search.toLowerCase());
   });
 
-  const loadCoins = async () => {
+  const loadCoins = useCallback(async () => {
     setIsLoading(true);
     try {
       const result = await fetchCryptoList({
@@ -46,15 +46,15 @@ export default function HomeClient() {
       });
       setCoins(result.coins);
       setTotalPages(Math.ceil(result.total / 20));
-    } catch {
-      console.error;
+    } catch (error) {
+      console.error(error);
     }
     setIsLoading(false);
-  };
+  }, [sortParam, currentPage]);
 
   useEffect(() => {
     loadCoins();
-  }, [sortParam, currentPage]);
+  }, [sortParam, currentPage, loadCoins]);
 
   useEffect(() => {
     if (totalPages < 1) return;
@@ -63,7 +63,7 @@ export default function HomeClient() {
       const validPage = Math.min(Math.max(currentPage, 1), totalPages);
       router.replace(`?page=${validPage}&sort=${sortParam}`);
     }
-  }, [currentPage, totalPages, sortParam]);
+  }, [currentPage, totalPages, sortParam, router]);
 
   useEffect(() => {
     if (coins.length > 0) {

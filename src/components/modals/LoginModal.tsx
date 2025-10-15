@@ -25,7 +25,7 @@ export interface ModalProps {
 export default function LoginModal({open,setOpen}:ModalProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setUser, logout } = useAuthStore();
+  const { setUser } = useAuthStore();
   const handleLogout = useHandleLogout();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -55,7 +55,7 @@ export default function LoginModal({open,setOpen}:ModalProps) {
       setUser(data.user);
       setOpen(false);
       toast.success("Успішний вхід");
-    } catch (err) {
+    } catch  {
       toast.error("Помилка логіна");
     }
   };

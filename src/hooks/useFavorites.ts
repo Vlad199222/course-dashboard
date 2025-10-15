@@ -9,7 +9,7 @@ interface FavoritesState {
   toggle: (coin: CryptoCoin) => void;
   isFavorite: (id: string) => boolean;
   clearFavorites: () => void;
-  removeFavorite: (coinId: any) => void;
+  removeFavorite: (coinId: string) => void;
 }
 
 export const useFavoritesStore = create<FavoritesState>()(
@@ -29,7 +29,7 @@ export const useFavoritesStore = create<FavoritesState>()(
       clearFavorites: () => set({ favorites: [] }),
       removeFavorite: (coinId) =>
         set((state) => {
-          let update = state.favorites.filter((c) => c.id !== coinId);
+          const update = state.favorites.filter((c) => c.id !== coinId);
           return { favorites: update };
         }),
     }),

@@ -1,6 +1,7 @@
 "use client";
 
 import { useFavoritesStore } from "@/hooks/useFavorites";
+import Image from "next/image";
 import { FaTrash } from "react-icons/fa";
 
 export default function Favoritessidebar() {
@@ -42,7 +43,7 @@ export default function Favoritessidebar() {
             className="flex items-center  bg-gray-50 dark:bg-gray-800 p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
           >
             <div className="flex items-center relative">
-              <img src={item.image} alt="Bitcoin" className="w-8 h-8 mr-3" />
+              <Image src={item.image} alt="Bitcoin" className="w-8 h-8 mr-3" width={50} height={50} />
 
               <div className="flex-1">
                 <p className="text-sm font-medium text-gray-800 dark:text-white">

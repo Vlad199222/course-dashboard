@@ -1,6 +1,7 @@
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { CryptoCoin } from "@/app/types/coin";
 import { useFavoritesStore } from "@/hooks/useFavorites";
+import Image from "next/image";
 
 interface CryptoCardProps {
   coin: CryptoCoin;
@@ -32,7 +33,7 @@ export default function CryptoCard({ coin }: CryptoCardProps) {
           </button>
           <div className="flex items-center">
             <div className="relative rounded-xl bg-blue-400 p-4">
-              <img className="w-12" src={image} alt={name} />
+              <Image className="w-12" src={image} alt={name} width={200} height={200} />
             </div>
             <div>
               <h2 className="text-xl font-bold ml-2 text-black">{name}</h2>
