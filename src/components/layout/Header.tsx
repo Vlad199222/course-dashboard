@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import LoginModals from "../modals/LoginModal";
 import { useAuthStore } from "@/hooks/useAuthStore";
 import { Avatar } from "../ui/avatar";
@@ -8,8 +8,18 @@ import { AvatarFallback } from "../ui/avatar";
 import { AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { useHandleLogout } from "@/hooks/useHandleLogout";
+import SignupModal from "../modals/SignupModal";
 
 const Header: React.FC = () => {
+  const [openLogin, setOpenLogin] = useState(false);
+  const [openSignup, setOpenSinup] = useState(false);
+
+  const openLoginWindow = (time: number = 1000) => {
+    setOpenSinup(false);
+    setTimeout(() => {
+      setOpenLogin(true);
+    }, time);
+  };
   const { user } = useAuthStore();
   const handleLogout = useHandleLogout();
   return (
@@ -25,15 +35,24 @@ const Header: React.FC = () => {
           </Avatar>
           <span className="text-sm text-black font-medium">{user.email}</span>
           <Button
-            onClick={()=>{handleLogout(true)}}
+            onClick={() => {
+              handleLogout(true);
+            }}
           >
             Вийти
           </Button>
         </div>
       ) : (
         <div className="flex gap-2">
-          <LoginModals />
-          <Button>Зареєструватися</Button>
+          <LoginModals
+            open={openLogin}
+            setOpen={setOpenLogin as (value: boolean) => void}
+          />
+          <SignupModal
+            open={openSignup}
+            setOpen={setOpenSinup}
+            openLoginModal={ openLoginWindow}
+          />
         </div>
       )}
     </header>

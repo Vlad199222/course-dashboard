@@ -16,10 +16,15 @@ import { useHandleLogout } from "@/hooks/useHandleLogout";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 
-export default function LoginModal() {
+
+export interface ModalProps {
+  open:boolean,
+  setOpen:(value:boolean)=>void,
+
+}
+export default function LoginModal({open,setOpen}:ModalProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [open, setOpen] = useState(false);
   const { setUser, logout } = useAuthStore();
   const handleLogout = useHandleLogout();
 
