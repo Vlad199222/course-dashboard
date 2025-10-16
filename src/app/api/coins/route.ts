@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
     const total = 250;
 
   const res = await fetch(
-    `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=${sort}&per_page=${perPage}&page=${page}&sparkline=false,`,
+    `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=${sort}&per_page=${perPage}&page=${page}&sparkline=false`,
     {
       next: { revalidate: 60 },
     }
@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
       JSON.stringify({ error: "Помилка при отриманні криптовалют!" }),
       {
         status: 500,
-        headers: { "Content-Type": "aplication/json" },
+        headers: { "Content-Type": "application/json" },
       }
     );
   }
@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
         JSON.stringify({ coins: [], message: "Більше монет немає" }),
         {
           status: 200,
-          headers: { "Content-Type": "aplication/json" },
+          headers: { "Content-Type": "application/json" },
         }
       );
     }
@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
   
     return new Response(JSON.stringify({ coins: data, total: total }), {
       status: 200,
-      headers: { "Content-Type": "aplication/json" },
+      headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
     return new Response(
