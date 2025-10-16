@@ -1,7 +1,17 @@
-export const fetchCryptoList = async ({sort ,page,perPage,}:{sort:string,page:number,perPage?:number}) => {
+export const fetchCryptoList = async ({
+  sort,
+  page,
+  perPage,
+}: {
+  sort: string;
+  page: number;
+  perPage?: number;
+}) => {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL; // <-- берём из ENV
+
   const res = await fetch(
-    `http://localhost:3000/api/coins?sort=${sort}&page=${page}&perPage=${perPage}`,
-    {next:{revalidate:60}}
+    `${baseUrl}/api/coins?sort=${sort}&page=${page}&perPage=${perPage ?? 20}`,
+    { next: { revalidate: 60 } }
   );
 
   if (!res.ok) {
