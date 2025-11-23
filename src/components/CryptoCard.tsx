@@ -5,7 +5,7 @@ import Image from "next/image";
 
 interface CryptoCardProps {
   coin: CryptoCoin;
-  rank: any;
+  rank: number;
 }
 
 export default function CryptoCard({ coin, rank }: CryptoCardProps) {
