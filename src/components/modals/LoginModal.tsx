@@ -16,13 +16,12 @@ import { useHandleLogout } from "@/hooks/useHandleLogout";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 
-
 export interface ModalProps {
-  open:boolean,
-  setOpen:(value:boolean)=>void,
-
+  open: boolean;
+  setOpen: (value: boolean) => void;
 }
-export default function LoginModal({open,setOpen}:ModalProps) {
+
+export default function LoginModal({ open, setOpen }: ModalProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { setUser } = useAuthStore();
@@ -34,28 +33,23 @@ export default function LoginModal({open,setOpen}:ModalProps) {
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({ email, password }),
       });
-      if (!res.ok) {
-        throw new Error("Невірний email чи пароль");
-      }
+      if (!res.ok) throw new Error("Невірний email чи пароль");
 
       const data = await res.json();
-      if (res.status === 200) {
-        if (data.user?.banned) {
-          toast.error("Ваш акаунт заблокованно");
-          handleLogout(false);
-          return;
-        }
+      if (res.status === 200 && data.user?.banned) {
+        toast.error("Ваш акаунт заблокованно");
+        handleLogout(false);
+        return;
       }
+
       setUser(data.user);
       setOpen(false);
       toast.success("Успішний вхід");
-    } catch  {
+    } catch {
       toast.error("Помилка логіна");
     }
   };
@@ -64,10 +58,9 @@ export default function LoginModal({open,setOpen}:ModalProps) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
-          onClick={() => {
-            setOpen(true);
-          }}
+          onClick={() => setOpen(true)}
           variant="secondary"
+          className="px-6 py-2 sm:px-8 sm:py-3"
         >
           Увійти
         </Button>
@@ -76,37 +69,41 @@ export default function LoginModal({open,setOpen}:ModalProps) {
         <DialogHeader>
           <DialogTitle>Вхід до акаунту</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-4">
-            <div className="grid gap-3">
-              <Label htmlFor="email-1">Email</Label>
-              <Input
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
-                id="email-1"
-                name="email"
-                type="email"
-                placeholder="Email"
-              />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="password-1">Password</Label>
-              <Input
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-                id="password-1"
-                name="password"
-                type="password"
-              />
-            </div>
+        <form onSubmit={handleSubmit} className="grid gap-4">
+          <div className="grid gap-3">
+            <Label htmlFor="email-1">Email</Label>
+            <Input
+              id="email-1"
+              name="email"
+              type="email"
+              placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
-          <DialogFooter>
+          <div className="grid gap-3">
+            <Label htmlFor="password-1">Password</Label>
+            <Input
+              id="password-1"
+              name="password"
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <DialogFooter className="flex flex-col sm:flex-row gap-3 mt-4">
             <DialogClose asChild>
-              <Button variant="outline">Закрити</Button>
+              <Button
+                variant="outline"
+                className="w-full sm:w-auto px-6 py-2 sm:px-4 sm:py-2"
+              >
+                Закрити
+              </Button>
             </DialogClose>
-            <Button type="submit">Увійти</Button>
+            <Button
+              type="submit"
+              className="w-full sm:w-auto px-6 py-2 sm:px-4 sm:py-2"
+            >
+              Увійти
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
 
   const page = parseInt(pageParam ?? "") || 1;
   const perPage = parseInt(perPageParam ?? "") || 20;
-    const total = 250;
+  const total = 250;
 
   const res = await fetch(
     `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=${sort}&per_page=${perPage}&page=${page}&sparkline=false`,
@@ -34,6 +34,7 @@ export async function GET(req: NextRequest) {
   }
   try {
     const data = await res.json();
+
     if (!Array.isArray(data) || data.length === 0) {
       return new Response(
         JSON.stringify({ coins: [], message: "Більше монет немає" }),
@@ -44,7 +45,6 @@ export async function GET(req: NextRequest) {
       );
     }
 
-  
     return new Response(JSON.stringify({ coins: data, total: total }), {
       status: 200,
       headers: { "Content-Type": "application/json" },

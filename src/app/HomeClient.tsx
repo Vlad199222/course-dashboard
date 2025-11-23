@@ -88,34 +88,45 @@ export default function HomeClient() {
           hasfavorites ? "pr-80" : "pr-0"
         }`}
       >
-        <div className="flex mt-10">
-          <Sort onChange={handleSortChange} />
-          <SearchBar search={search} setSearch={setSearch} />
-        </div>
+        <div
+          className="    w-full               
+    max-w-[1170px]      
+    mx-auto             
+    px-4                 
+    flex
+    flex-col
+    items-center        
+    mt-10"
+        >
+          <div>
+            <Sort onChange={handleSortChange} />
+            <SearchBar search={search} setSearch={setSearch} />
+          </div>
 
-        <Element name="top">
-          {isLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-1 px-4">
-              {[...Array(12)].map((_, index) => (
-                <SkeletonCard key={index} />
-              ))}
-            </div>
-          ) : filterCoins.length > 0 ? (
-            <div className="mt-10">
-              <CryptoList data={filterCoins} />
-            </div>
-          ) : coins.length > 0 ? (
-            <div className="flex flex-col items-center justify-center text-zinc-500  dark:text-zinc-400 text-xl mt-10">
-              <HiOutlineSearch />
-              Нічого не знайдено
-            </div>
-          ) : null}
-        </Element>
-        <Pagination
-          page={parseInt(pageParam || "1")}
-          onPageChange={handlePageChange}
-          totalPages={totalPages}
-        />
+          <Element name="top">
+            {isLoading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-1 px-4">
+                {[...Array(12)].map((_, index) => (
+                  <SkeletonCard key={index} />
+                ))}
+              </div>
+            ) : filterCoins.length > 0 ? (
+              <div className="mt-10 ">
+                <CryptoList data={filterCoins} />
+              </div>
+            ) : coins.length > 0 ? (
+              <div className="flex flex-col items-center justify-center text-zinc-500  dark:text-zinc-400 text-xl mt-10">
+                <HiOutlineSearch />
+                Нічого не знайдено
+              </div>
+            ) : null}
+          </Element>
+          <Pagination
+            page={parseInt(pageParam || "1")}
+            onPageChange={handlePageChange}
+            totalPages={totalPages}
+          />
+        </div>
       </main>
     </>
   );

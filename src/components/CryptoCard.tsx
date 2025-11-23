@@ -5,65 +5,80 @@ import Image from "next/image";
 
 interface CryptoCardProps {
   coin: CryptoCoin;
+  rank: any;
 }
 
-export default function CryptoCard({ coin }: CryptoCardProps) {
+export default function CryptoCard({ coin, rank }: CryptoCardProps) {
   const { name, symbol, current_price, price_change_percentage_24h, image } =
     coin;
 
   const favorites = useFavoritesStore((state) => state.favorites);
-  const isFavorite = favorites.some((item) => item.id === coin.id);
   const toggle = useFavoritesStore((state) => state.toggle);
+  const isFavorite = favorites.some((item) => item.id === coin.id);
   const isPositive = price_change_percentage_24h >= 0;
-  return (
-    <div>
-      <div className="bg-slate-200 w-fit m-5 rounded-2xl p-4">
-        <div className="rounded-2xl bg-white p-4 relative">
-          <button
-            onClick={() => {
-              toggle(coin);
-            }}
-            className=" absolute right-2 top-1 h-8 w-8 cursor-pointer p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-800 transition flex justify-center items-center"
-          >
-            {isFavorite ? (
-              <FaStar className="text-yellow-400" />
-            ) : (
-              <FaRegStar className="w-4 h-4" />
-            )}
-          </button>
-          <div className="flex items-center">
-            <div className="relative rounded-xl bg-blue-400 p-4">
-              <Image className="w-12" src={image} alt={name} width={200} height={200} />
-            </div>
-            <div>
-              <h2 className="text-xl font-bold ml-2 text-black">{name}</h2>
-              <p className=" text-sm uppercase text-zinc-500 dark:text-zinc-400 ml-2 tracking-wide">
-                {symbol}
-              </p>
-            </div>
-          </div>
-          <div className="flex flex-col justify-start">
-            <p className="my-4 text-left text-4xl font-bold text-gray-700">
-              {current_price !== null ? current_price.toLocaleString() : "N/A"}
-              <span className="text-sm"> $ </span>
-            </p>
-            <div className="flex items-center text-sm text-green-500">
-              <div
-                className={`text-xl font-semibold flex items-center gap-1 ${
-                  isPositive ? "text-emerald-500" : "text-rose-500"
-                }`}
-              >
-                {isPositive ? "\u25B2" : "\u25BC"}{" "}
-                {price_change_percentage_24h !== null
-                  ? price_change_percentage_24h.toFixed(2)
-                  : "N/A"}
-                %
-              </div>
 
-              <span> </span>
-              <span className="ml-2 text-gray-400"> останні 24 г. </span>
-            </div>
-          </div>
+  return (
+    <div
+      className="max-w-full lg:w-auto 
+         bg-white dark:bg-gray-900 shadow-sm 
+         p-2 flex flex-row items-center 
+         sm:gap-2 md:gap-6 lg:gap-10 transition-all duration-200 
+         hover:bg-gray-200 dark:hover:bg-gray-800 "
+    >
+      {/* Кнопка избранного слева */}
+      <button
+        onClick={() => toggle(coin)}
+        className="cursor-pointer p-2 rounded-full hover:bg-white dark:hover:bg-gray-700 transition flex items-center justify-center"
+      >
+        {isFavorite ? (
+          <FaStar className="text-yellow-400 w-5 h-5" />
+        ) : (
+          <FaRegStar className="text-gray-400 w-5 h-5" />
+        )}
+      </button>
+
+      {/* Левая часть: Ранг + Картинка + Название */}
+      <div className="flex    items-center max-w-[200px]   lg:max-w-[400px] w-full ">
+        <div className="hidden sm:block text-gray-900 font-semibold w-6 text-left">{rank}</div>
+        <div className="relative w-10 h-10 flex-shrink-0  sm:ml-5 lg:ml-10">
+          <Image
+            src={image}
+            alt={name}
+            width={30}
+            height={30}
+            className="rounded-full"
+          />
+        </div>
+        <div className="flex items-center gap-1  ">
+          <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 ml-4">
+            {name}
+          </h2>
+          <p className="text-medium ml-1 uppercase text-gray-500 dark:text-gray-400">
+            {symbol}
+          </p>
+        </div>
+      </div>
+
+      {/* Цена и изменение */}
+      <div className="flex flex-col sm:flex-row   items-center  max-w-60 w-full  ml-4 lg:ml-12 justify-center">
+        <p className="text-base font-normal text-gray-800 dark:text-gray-100 ">
+          {current_price !== null
+            ? current_price.toLocaleString("en-US", {
+                style: "currency",
+                currency: "USD",
+              })
+            : "N/A"}
+        </p>
+        <div
+          className={`font-medium ${
+            isPositive ? "text-emerald-500" : "text-rose-500"
+          } ml-4`}
+        >
+          {isPositive ? "▲" : "▼"}{" "}
+          {price_change_percentage_24h !== null
+            ? price_change_percentage_24h.toFixed(2)
+            : "N/A"}
+          %
         </div>
       </div>
     </div>
